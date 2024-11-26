@@ -663,7 +663,8 @@ struct WireHelpers {
               return result;
             }
 
-            KJ_REQUIRE(elementTag->structRef.wordSize() / ELEMENTS * count <= wordCount,
+            KJ_REQUIRE(elementTag->structRef.wordSize() / ELEMENTS *
+                       ElementCount64(count) <= wordCount,
                        "Struct list pointer's elements overran size.") {
               return result;
             }
@@ -1682,7 +1683,7 @@ struct WireHelpers {
           ElementCount elementCount = tag->inlineCompositeListElementCount();
           auto wordsPerElement = tag->structRef.wordSize() / ELEMENTS;
 
-          KJ_REQUIRE(wordsPerElement * elementCount <= wordCount,
+          KJ_REQUIRE(wordsPerElement * ElementCount64(elementCount) <= wordCount,
                      "INLINE_COMPOSITE list's elements overrun its word count.") {
             goto useDefault;
           }
@@ -1924,7 +1925,7 @@ struct WireHelpers {
       size = tag->inlineCompositeListElementCount();
       wordsPerElement = tag->structRef.wordSize() / ELEMENTS;
 
-      KJ_REQUIRE(size * wordsPerElement <= wordCount,
+      KJ_REQUIRE(ElementCount64(size) * wordsPerElement <= wordCount,
                  "INLINE_COMPOSITE list's elements overrun its word count.") {
         goto useDefault;
       }
